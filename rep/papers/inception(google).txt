@@ -1,0 +1,1 @@
+This autors describe a few general principles and optimization ideas that proved to be useful for scaling up convolution networks.The best quality this model is very eficient in scenarios where memory ou computational capacity is inherently limited. However, the complexity of the inception architecture make is more difficult to make changes to the network. 

@@ -1,0 +1,1 @@
+This work was used a SVM and Artificial Neural Network (separate), where the features extraction was realizaded with help in the software as ABIS and DAISY. The features is area, perimeter, holes' number, eccentricity and others. 

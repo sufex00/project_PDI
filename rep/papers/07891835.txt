@@ -1,0 +1,1 @@
+The authors propose a novel method based on convolutional neural networks for mosquito larva classification. The article was used Alexnet architecture for the deep model, where the database was obted for the authors.

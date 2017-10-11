@@ -1,0 +1,4 @@
+
+In the article, this authors analysis the mosquito e classify which are Dengue
+mosquitoes. The papers present a decision tree showing the work to be carried out , where the principal objective is identify female mosquitoes. He was uses a preprocessing (gray scale transformation, blurred image and Equalization Histogram) for analyses. The input image feature is extract and the information is used for classify mosquito using techniques of DIP.
+

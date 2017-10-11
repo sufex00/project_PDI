@@ -1,0 +1,1 @@
+This authors using artificial neural network for automated identification of mosquito where they was used Fourier transform for to classification. 

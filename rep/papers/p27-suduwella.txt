@@ -1,0 +1,3 @@
+This papers proposed a method than identify mosquito breeding sites using drone
+images. The authors analyses and extract features the video generate where is located in map the position to suspected breeding sites and the information send
+a generated 3D meshes for inspectors.

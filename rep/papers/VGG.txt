@@ -1,0 +1,1 @@
+This paper investigate the effect of the convolutional network depth on its accuracy in the large-scale image recognition. The autors describe two best-perfoming models to facilitate further research, know as VGG-16 and VGG-19, where this names is reference to numbers of layer in the model. With this arquiteture, thie autors get the best-performing in ILSVRC-2013.

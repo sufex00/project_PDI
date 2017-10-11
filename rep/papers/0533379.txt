@@ -1,0 +1,1 @@
+In the article, the authors proposed a new algorithm for segmenting and counting aedes aegypti eggs. The papers using k-means clustering algorithm combinated with image processing techniques (color systems exploration). For this purpose, the original RGB image is converted into a HSV image, for the extract features in the image.
