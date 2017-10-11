@@ -1,0 +1,1 @@
+This work analyses a new deep neural network model with the propriety than residual layer, where it is easier to optimize and can gain accuracy from considerably increased depth. The deep neural network model is not caused overfitting by degradation, because its recurrent propriety.
