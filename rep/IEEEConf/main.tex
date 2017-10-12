@@ -39,7 +39,7 @@
 %% ** Modified files should be clearly indicated as such, including  **
 %% ** renaming them and changing author support contact information. **
 %%
-%% File list of work: IEEEtran.cls, IEEEtran_HOWTO.pdf, bare_adv.tex,
+%% File list of work: IEEEtran.cls, IEEEtran_HOWTO.pdf, bare_adv.tex,
 %%                    bare_conf.tex, bare_jrnl.tex, bare_jrnl_compsoc.tex
 %%*************************************************************************
 
@@ -353,7 +353,7 @@
 %
 % paper title
 % can use linebreaks \\ within to get better formatting as desired
-\title{Bare Demo of IEEEtran.cls for Conferences}
+\title{Mosquito Classification Method Based on Convolutional Neural Networks}
 
 
 % author names and affiliations
@@ -445,10 +445,26 @@ IEEEtran, journal, \LaTeX, paper, template.
 
 
 \section{Introduction}
-\blindtext
+Ele  como fo.
 
-\subsection{Subsection Heading Here}
-\blindtext
+\subsection{Related work}
+%\blindtext
+
+Many works was realized with proposed identify and classify bug and mosquitoes, this problem is very old, \cite{HAY1998306} proposed a predict model for mosquito habitat using remotely sensed data with techniques for aerial photographic identification (remotely sensed).
+
+Recently, we see in \cite{Wang:2012:NAI:2240322.2240719} that authors was used a SVM and Artificial Neural Network (in separate),for the features extraction was realized with help in the software as ABIS and DAISY. The features analysis is area, perimeter, holes' number, eccentricity and others. \cite{Jahangir:2014} provides characteristic descriptions of some insects and statistical analysis of the data. The characteristic is abdomen, thorax, head and others. The image was filtered and they realized segmentation for the classification. 
+
+In the literature see propose to method than identify mosquito breeding sites using drone images. The authors \cite{Suduwella:2017:IMB:3086439.3086442} analyses and extract features the video generate where is located in map the position to suspected breeding sites and the information send
+a generated 3D meshes for inspectors. 
+
+A new algorithm for segmenting and counting Aedes Aegypti eggs was used in \cite{GUSMAO:2019}. The papers introduce this propose using k-means clustering algorithm combination with image processing techniques (color systems exploration). For this purpose, the original RGB image is converted into a HSV image, for the extract features in the image.
+
+
+In the article \cite{Mahantesh:2017} analysis the mosquito e classify which are Dengue mosquitoes. The papers present a decision tree showing the work to be carried out , where the principal objective is identify female mosquitoes. He was uses a preprocessing (gray scale transformation, blurred image and Equalization Histogram) for analyses. The input image feature is extract and the information is used for classify mosquito using techniques of DIP.
+
+SVM for classification of mosquitoes was used for \cite{Fuchida:2017}, where the features used in the papers was the color and morphological. The picture segmentation was utilized for separate mosquito and background, where the sobel filter was applied for edge detection. It was report, the authors not considered wings and arms to mosquito because the elements was retired in the segmentation process.  
+
+With recent advances in neural network  many works with this motif are being developed. In \cite{Li2005}, the authors using artificial neural network for automated identification of mosquito, they was used Fourier transform for to classification apply in wing-beat waveform. The authors \cite{Sanchez:2017} propose a novel method based on convolution neural networks for mosquito larva classification, the article was used Alexnet architecture for the deep model.
 
 % needed in second column of first page if using \IEEEpubid
 %\IEEEpubidadjcol
@@ -593,22 +609,16 @@ The authors would like to thank...
 % http://www.ctan.org/tex-archive/biblio/bibtex/contrib/doc/
 % The IEEEtran BibTeX style support page is at:
 % http://www.michaelshell.org/tex/ieeetran/bibtex/
-%\bibliographystyle{IEEEtran}
+\bibliographystyle{IEEEtran}
 % argument is your BibTeX string definitions and bibliography database(s)
 %\bibliography{IEEEabrv,../bib/paper}
 %
 % <OR> manually copy in the resultant .bbl file
 % set second argument of \begin to the number of references
 % (used to reserve space for the reference number labels box)
-\begin{thebibliography}{1}
+\bibliography{IEEEabrv,ref}
 
-\bibitem{IEEEhowto:kopka}
-H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
-  0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
-
-\end{thebibliography}
-
-% biography section
+% biography sectio,n
 % 
 % If you have an EPS/PDF photo (graphicx package needed) extra braces are
 % needed around the contents of the optional argument to biography to prevent
