@@ -30,7 +30,8 @@ def Train(input_shape = (128, 128, 1)):
 
     	#x_test = x_test.reshape(x_test.shape[0], 1, 28, 28).astype('float32') 
 
-	KFold_Train(x_train,y_train)
+	h = KFold_Train(x_train,y_train)
+	return h
      
 '''
 	for idx in range(x_train.shape[0]):
@@ -66,10 +67,9 @@ def Train(input_shape = (128, 128, 1)):
 
 	#KFold_Train(x_train,y_train)
 
-
 #################################################################
 
-def KFold_Train(x_train,y_train,nfolds=3,batch_size=128):
+def KFold_Train(x_train,y_train,nfolds=10,batch_size=128):
 	model = zika_model(input_shape)
 	kf = KFold(n_splits=nfolds, shuffle=True, random_state=1)
 	num_fold = 0 
@@ -91,8 +91,8 @@ def KFold_Train(x_train,y_train,nfolds=3,batch_size=128):
 		
 		kfold_weights_path = os.path.join('', 'weights_kfold_' + str(num_fold) + '.h5')
 
-		epochs_arr =  [2, 2, 2]
-		learn_rates = [0.001, 0.0001, 0.00001]
+		epochs_arr =  [50, 30, 20, 10]
+		learn_rates = [0.001, 0.0001, 0.00001, 0.000001]
 
 		for learn_rate, epochs in zip(learn_rates, epochs_arr):
 		    print('Start Learn_rate number {} from {}'.format(epochs,learn_rate))
@@ -103,15 +103,16 @@ def KFold_Train(x_train,y_train,nfolds=3,batch_size=128):
 		    callbacks = [EarlyStopping(monitor='val_loss', patience=2, verbose=1),
 		    ModelCheckpoint(kfold_weights_path, monitor='val_loss', save_best_only=True, verbose=0)]
 
-		    model.fit(x = X_train, y= Y_train, validation_data=(X_valid, Y_valid),
+		    history = model.fit(x = X_train, y= Y_train, validation_data=(X_valid, Y_valid),
 		          batch_size=32,verbose=1, epochs=epochs,callbacks=callbacks,shuffle=True)
 		
 		if os.path.isfile(kfold_weights_path):
 		    model.load_weights(kfold_weights_path)
-		
 		p_valid = model.predict(X_valid, batch_size = 32, verbose=2)
+	return history
 
 #################################################################
+
 
 
 
