@@ -22,16 +22,11 @@ def KFold_Predict(x_test,nfolds=3,batch_size=128):
 
 def Predict(x_test):
 	output = KFold_Predict(x_test)
-	matrix = [[0 for x in range(2)] for y in range(2)] 
 	for i in range(0, output.shape[0]):
 	    if output[i] > 0.5:
              output[i] = 1
 	    else:
              output[i] = 0
-	    x_var = int(y_test[i])
-	    y_var = int(output[i])
-	    matrix[x_var][y_var] += 1
 
-	return output, matrix     
-
+	return output     
 

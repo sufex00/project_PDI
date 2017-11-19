@@ -69,7 +69,7 @@ def Train(input_shape = (128, 128, 1)):
 
 #################################################################
 
-def KFold_Train(x_train,y_train,nfolds=10,batch_size=128):
+def KFold_Train(x_train,y_train,nfolds=3,batch_size=128):
 	model = zika_model(input_shape)
 	kf = KFold(n_splits=nfolds, shuffle=True, random_state=1)
 	num_fold = 0 
@@ -91,8 +91,8 @@ def KFold_Train(x_train,y_train,nfolds=10,batch_size=128):
 		
 		kfold_weights_path = os.path.join('', 'weights_kfold_' + str(num_fold) + '.h5')
 
-		epochs_arr =  [50, 30, 20, 10]
-		learn_rates = [0.001, 0.0001, 0.00001, 0.000001]
+		epochs_arr =  [30, 15, 10]
+		learn_rates = [0.001, 0.0001, 0.00001]
 
 		for learn_rate, epochs in zip(learn_rates, epochs_arr):
 		    print('Start Learn_rate number {} from {}'.format(epochs,learn_rate))
@@ -108,11 +108,11 @@ def KFold_Train(x_train,y_train,nfolds=10,batch_size=128):
 		
 		if os.path.isfile(kfold_weights_path):
 		    model.load_weights(kfold_weights_path)
+		
 		p_valid = model.predict(X_valid, batch_size = 32, verbose=2)
-	return history
+		return history
 
 #################################################################
-
 
 
 

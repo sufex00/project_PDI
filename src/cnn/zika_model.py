@@ -11,20 +11,27 @@ def zika_model(input_shape=(128, 128,3),weight_path=None):
         model.add(Conv2D(128, (3, 3), activation='relu'))
         model.add(MaxPooling2D(pool_size=(2, 2)))
         
-        model.add(Conv2D(256, kernel_size=(3, 3), activation='relu'))
+        model.add(Conv2D(256, kernel_size=(3, 3),padding='same', activation='relu'))
         model.add(Conv2D(256, (3, 3), activation='relu'))
         model.add(Conv2D(256, (3, 3), activation='relu'))        
         model.add(MaxPooling2D(pool_size=(2, 2)))
        
-        model.add(Conv2D(256, kernel_size=(3, 3), activation='relu'))
-        model.add(Conv2D(256, (3, 3), activation='relu'))
+        model.add(Conv2D(512, kernel_size=(3, 3),padding='same', activation='relu'))
+        model.add(Conv2D(512, (3, 3), activation='relu'))
+        model.add(Conv2D(512, (3, 3), activation='relu'))
         model.add(MaxPooling2D(pool_size=(2, 2)))
 
+        model.add(Conv2D(512, kernel_size=(3, 3),padding='same', activation='relu'))
+        model.add(Conv2D(512, (3, 3), activation='relu'))
+        model.add(Conv2D(512, (3, 3), activation='relu'))
+        model.add(MaxPooling2D(pool_size=(2, 2)))
  
         model.add(Flatten())
-        model.add(Dense(512, activation='relu'))
-        model.add(BatchNormalization())
+        model.add(Dense(4096, activation='relu'))
         model.add(Dropout(0.5))
+        model.add(Dense(1000, activation='relu'))
+        model.add(Dense(64, activation='relu'))
+
         model.add(Dense(1, activation='sigmoid'))
 	return model        
 

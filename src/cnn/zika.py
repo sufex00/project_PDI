@@ -2,7 +2,7 @@ import os
 import numpy
 import sys
 
-sys.path.append('/usr/local/lib/python2.7/dist-packages')
+sys.path.append('/usr/loca/bin/python2.7/dist-packages')
 #theano.config.openmp=True
 
 # fix random seed for reproducibility
@@ -13,17 +13,17 @@ numpy.random.seed(seed)
 
 mypath = '../db/'
 
-nfolds=10
+nfolds=3
 
-size_img = 225 
+size_img = 300
 
 input_shape= (3, size_img, size_img)
 
-num_classes = 1 
+num_classes = 10 
 
 sum_score = 0
 
-size_train = 468
+size_train = 440
 
 execfile('definition.py')
 
@@ -32,18 +32,10 @@ execfile('definition.py')
 
 
 def main():
-
-    if(sys.argv[1] == 'train'):
+    #if(sys.argv[1] == 'train'):
 	h = Train(input_shape)
-    if(sys.argv[1] == 'predict'):
-	p, matrix = Predict(x_test)
-	a = 0
-	for e in range(y_test.shape[0]):
-		if y_test[e] == p[e]:
-			a +=1
-	print a
-	print matrix
-
+    #if(sys.argv[1] == 'predict'):
+	r = Predict(x_test)
 if __name__ == '__main__':
     main()
 
