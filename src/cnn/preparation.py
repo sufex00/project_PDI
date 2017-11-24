@@ -27,12 +27,15 @@ for f in onlyfiles:
     if 'aedes' in f:
         img = cv2.imread(mypath+'aedes/{}'.format(f))
         Y.append(1)
-    X.append(cv2.resize(img, (size_img, size_img)))
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    (threshName, threshMethod) = ("THRESH_BINARY", cv2.THRESH_BINARY)
+    (T, thresh) = cv2.threshold(gray, 150, 255, threshMethod)
+    X.append(cv2.resize(thresh, (size_img, size_img)))
     
 X = np.array(X)
 Y = np.array(Y)    
     
-X = X.reshape(X.shape[0], 3, size_img, size_img).astype('float32')
+X = X.reshape(X.shape[0], 1, size_img, size_img).astype('float32')
 X = X/255
 
 x_train = X[:size_train]

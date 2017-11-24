@@ -32,6 +32,9 @@ from os import listdir
 from os.path import isfile, join
 from random import shuffle
 
+from keras.layers import Input, Dense, Conv2D, MaxPooling2D, UpSampling2D
+from keras.models import Model
+
 execfile('zika_model.py')
 execfile('preparation.py')
 execfile('train.py')

@@ -23,8 +23,37 @@ def Train(input_shape = (128, 128, 1)):
 	#x_train = np.asarray(x_train)
 	#y_train = np.asarray(y_train)
 
+	global x_train
+	global y_train
+
+	x_train = np.asarray(x_train)
+	y_train = np.asarray(y_train)
+
 	x_t = []
 	y_t = []
+
+	for idx in range(x_train.shape[0]):
+		x_t.append(x_train[idx])
+		y_t.append(y_train[idx])
+		aux_x_t = x_t[idx]
+		aux_y_t = y_t[idx]
+		flipped_img=cv2.flip(x_t[idx],1)
+		rows,cols,channel = input_shape
+		x_t.append(flipped_img)
+		y_t.append(y_train[idx])
+
+		for rotate_degree in [90,180,270]:
+		    M = cv2.getRotationMatrix2D((cols/2,rows/2),rotate_degree,1)
+		    dst = cv2.warpAffine(aux_x_t,M,(cols,rows))
+		    x_t.append(dst)
+		    y_t.append(aux_y_t)
+		    
+		    dst = cv2.warpAffine(flipped_img,M,(cols,rows))
+		    x_t.append(dst)
+		    y_t.append(aux_y_t)
+	
+	y_train = np.array(y_t, np.uint8)
+	x_train = np.array(x_t, np.uint8)
  
 	#x_train = x_train.reshape(x_train.shape[0], 1, 28, 28).astype('float32')
 
@@ -69,8 +98,9 @@ def Train(input_shape = (128, 128, 1)):
 
 #################################################################
 
-def KFold_Train(x_train,y_train,nfolds=3,batch_size=128):
+def KFold_Train(x_train,y_train,nfolds=6,batch_size=128):
 	model = zika_model(input_shape)
+	print model.summary()
 	kf = KFold(n_splits=nfolds, shuffle=True, random_state=1)
 	num_fold = 0 
 	for train_index, test_index in kf.split(x_train, y_train):
@@ -91,8 +121,8 @@ def KFold_Train(x_train,y_train,nfolds=3,batch_size=128):
 		
 		kfold_weights_path = os.path.join('', 'weights_kfold_' + str(num_fold) + '.h5')
 
-		epochs_arr =  [30, 15, 10]
-		learn_rates = [0.001, 0.0001, 0.00001]
+		epochs_arr =  [50, 30, 20, 10]
+		learn_rates = [0.001, 0.0001, 0.00001, 0.000001]
 
 		for learn_rate, epochs in zip(learn_rates, epochs_arr):
 		    print('Start Learn_rate number {} from {}'.format(epochs,learn_rate))
@@ -108,11 +138,61 @@ def KFold_Train(x_train,y_train,nfolds=3,batch_size=128):
 		
 		if os.path.isfile(kfold_weights_path):
 		    model.load_weights(kfold_weights_path)
-		
 		p_valid = model.predict(X_valid, batch_size = 32, verbose=2)
-		return history
+	return history
 
 #################################################################
+
+
+def autoencoder(input_shape_autoencoder):
+	global x_train
+	global x_test
+	input_img = Input(shape=(1,size_img, size_img))
+	x = Conv2D(16, (3, 3), activation='relu', padding='same')(input_img)
+	x = MaxPooling2D((2, 2), padding='same')(x)
+	x = Conv2D(8, (3, 3), activation='relu', padding='same')(x)
+	x = MaxPooling2D((2, 2), padding='same')(x)
+	x = Conv2D(8, (3, 3), activation='relu', padding='same')(x)
+	encoded = MaxPooling2D((2, 2), padding='same')(x)
+
+# at this point the representation is (4, 4, 8) i.e. 128-dimensional
+
+	x = Conv2D(8, (3, 3), activation='relu', padding='same')(encoded)
+	x = UpSampling2D((2, 2))(x)
+	x = Conv2D(8, (3, 3), activation='relu', padding='same')(x)
+	x = UpSampling2D((2, 2))(x)
+	x = Conv2D(16, (3, 3), activation='relu')(x)
+	x = UpSampling2D((2, 2))(x)
+	decoded = Conv2D(1, (3, 3), activation='sigmoid', padding='same')(x)
+
+	autoencoder = Model(input_img, decoded)
+	autoencoder.compile(optimizer='adadelta', loss='binary_crossentropy')
+
+	autoencoder.fit(x_train, x_train,
+                epochs=50,
+                batch_size=128,
+                shuffle=True,
+                validation_data=(x_test, x_test))
+	decoded_imgs = autoencoder.predict(x_test)
+
+	n = 10
+	plt.figure(figsize=(20, 4))
+	for i in range(n):
+	    # display original
+	    ax = plt.subplot(2, n, i)
+	    plt.imshow(x_test[i].reshape(size_img, size_img))
+	    plt.gray()
+	    ax.get_xaxis().set_visible(False)
+	    ax.get_yaxis().set_visible(False)
+
+	    # display reconstruction
+	    ax = plt.subplot(2, n, i + n)
+	    plt.imshow(decoded_imgs[i].reshape(size_img, size_img))
+	    plt.gray()
+	    ax.get_xaxis().set_visible(False)
+	    ax.get_yaxis().set_visible(False)
+	plt.show()
+
 
 
 

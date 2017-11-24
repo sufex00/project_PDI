@@ -1,5 +1,5 @@
 #################################################################
-def KFold_Predict(x_test,nfolds=3,batch_size=128):
+def KFold_Predict(x_test,nfolds=6,batch_size=128):
     #model = mnist_model(input_shape)
     model = zika_model(input_shape)
     yfull_test = []
@@ -13,6 +13,7 @@ def KFold_Predict(x_test,nfolds=3,batch_size=128):
         
     result = np.array(yfull_test[0])
     for i in range(1, nfolds):
+	print 'Nfold = ' + str(i)
         result += np.array(yfull_test[i])
     result /= nfolds
     return result
@@ -22,11 +23,16 @@ def KFold_Predict(x_test,nfolds=3,batch_size=128):
 
 def Predict(x_test):
 	output = KFold_Predict(x_test)
+	matrix = [[0 for x in range(2)] for y in range(2)] 
 	for i in range(0, output.shape[0]):
-	    if output[i] > 0.5:
+	    if output[i] > 0.45:
              output[i] = 1
 	    else:
              output[i] = 0
+	    x_var = int(y_test[i])
+	    y_var = int(output[i])
+	    matrix[x_var][y_var] += 1
 
-	return output     
+	return output, matrix     
+
 
