@@ -8,6 +8,12 @@ Created on Tue Nov 28 14:33:47 2017
 from os import listdir
 from os.path import isfile, join
 from random import shuffle
+
+import sys
+
+sys.path.append('/usr/local/lib/python2.7/dist-packages')
+
+
 import cv2
 
 from keras.layers import Input, Dense, Conv2D, MaxPooling2D, UpSampling2D
@@ -16,18 +22,18 @@ from keras import backend as K
 
 from matplotlib  import pyplot as plt
 
-size_img = 100
+size_img = 40
 
 #   input_img = Input(shape=(1, 225, 225))  # adapt this if using `channels_first` image data format
 
 input_img = Input(shape=(size_img*size_img,))
-encoded = Dense(128*64, activation='relu')(input_img)
-encoded = Dense(64*32, activation='relu')(encoded)
-encoded = Dense(150, activation='relu')(encoded)
+encoded = Dense(128*2, activation='relu')(input_img)
+encoded = Dense(64*2, activation='relu')(encoded)
+encoded = Dense(64, activation='relu')(encoded)
 
-decoded = Dense(150, activation='relu')(encoded)
-encoded = Dense(64*32, activation='relu')(encoded)
-encoded = Dense(128*64, activation='relu')(encoded)
+decoded = Dense(64, activation='relu')(encoded)
+encoded = Dense(64*2, activation='relu')(encoded)
+encoded = Dense(128*2, activation='relu')(encoded)
 decoded = Dense(size_img*size_img, activation='sigmoid')(decoded)
 
 autoencoder = Model(input_img, decoded)
@@ -40,9 +46,11 @@ import numpy as np
 
 #(x_train, _), (x_test, _) = mnist.load_data()
 
+
+
 ###################################################################################
 
-mypath = '/home/pedro_barros/db/'
+mypath = '../db/'
 
 
 
@@ -67,7 +75,7 @@ Y = []
 aux = [f for f in listdir(mypath+'culex/') if isfile(join(mypath+'culex/', f))]
 
 onlyfiles = onlyfiles + aux
-    
+
 shuffle(onlyfiles)
 
 
@@ -83,10 +91,11 @@ for f in onlyfiles:
     (threshName, threshMethod) = ("THRESH_BINARY", cv2.THRESH_BINARY)
     (T, thresh) = cv2.threshold(gray, 150, 255, threshMethod)
     X.append(cv2.resize(thresh, (size_img, size_img)))
-    
+
+
 X = np.array(X)
-Y = np.array(Y)    
-    
+Y = np.array(Y)
+
 X = X.reshape(X.shape[0], size_img * size_img).astype('float32')
 
 x_train = X[:size_train]
@@ -105,12 +114,13 @@ x_test=x_test/255.
 from keras.callbacks import TensorBoard
 
 autoencoder.fit(x_train, x_train,
-                epochs=10,
+                epochs=2000,
                 batch_size=32,
                 shuffle=True,
                 validation_data=(x_test, x_test),
+                verbose = 2,
                 callbacks=[TensorBoard(log_dir='/tmp/autoencoder')])
-                
+
 decoded_imgs = autoencoder.predict(x_test)
 
 n = 10
@@ -130,3 +140,4 @@ for i in range(1,n):
     ax.get_xaxis().set_visible(False)
     ax.get_yaxis().set_visible(False)
 plt.show()
+
