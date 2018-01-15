@@ -22,7 +22,7 @@ from keras import backend as K
 
 from matplotlib  import pyplot as plt
 
-size_img = 40
+size_img = 50
 
 #   input_img = Input(shape=(1, 225, 225))  # adapt this if using `channels_first` image data format
 
@@ -32,10 +32,11 @@ encoded = Dense(64*2, activation='relu')(encoded)
 encoded = Dense(64, activation='relu')(encoded)
 
 decoded = Dense(64, activation='relu')(encoded)
-encoded = Dense(64*2, activation='relu')(encoded)
-encoded = Dense(128*2, activation='relu')(encoded)
+decoded = Dense(64*2, activation='relu')(decoded)
+decoded = Dense(128*2, activation='relu')(decoded)
 decoded = Dense(size_img*size_img, activation='sigmoid')(decoded)
 
+encoder = Model(input_img, encoded)
 autoencoder = Model(input_img, decoded)
 autoencoder.compile(optimizer='adadelta', loss='binary_crossentropy')
 
@@ -109,18 +110,24 @@ x_test=x_test/255.
 
 ###################################################################################
 
-
-
 from keras.callbacks import TensorBoard
+from keras.callbacks import ModelCheckpoint
+
+filepath="weights.hdf5"
+checkpoint = ModelCheckpoint(filepath, monitor= 'val_loss' , verbose=1, save_best_only=True,
+mode= 'min' )
 
 autoencoder.fit(x_train, x_train,
-                epochs=2000,
+                epochs=200,
                 batch_size=32,
                 shuffle=True,
                 validation_data=(x_test, x_test),
                 verbose = 2,
-                callbacks=[TensorBoard(log_dir='/tmp/autoencoder')])
+                callbacks=[TensorBoard(log_dir='/tmp/autoencoder'), checkpoint])
 
+print("Saved model to disk")
+
+encoder_imgs = encoder.predict(x_test)
 decoded_imgs = autoencoder.predict(x_test)
 
 n = 10
